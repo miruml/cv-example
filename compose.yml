@@ -1,9 +1,11 @@
+version: '3.3'
 services:
   jetson-detectnet:
     build: .
-    image: jetson-detectnet:0.1
+    image: jetson-detectnet:0.0.1
     container_name: jetson-detectnet
     runtime: nvidia
+    network_mode: host
     devices:
       - /dev/video0:/dev/video0
     volumes:
@@ -19,3 +21,4 @@ services:
       - DISPLAY=:0
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,utility,video
+    privileged: true

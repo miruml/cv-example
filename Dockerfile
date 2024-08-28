@@ -21,10 +21,44 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
+# Install Multimedia API samples & libs
+RUN apt-get update && apt-get download nvidia-l4t-jetson-multimedia-api \
+    && dpkg-deb -R ./nvidia-l4t-jetson-multimedia-api_*_arm64.deb ./mm-api \
+    && cp -r ./mm-api/usr/src/jetson_multimedia_api /usr/src/jetson_multimedia_api \
+    && ./mm-api/DEBIAN/postinst \
+    && rm -rf ./nvidia-l4t-jetson-multimedia-api_*_arm64.deb ./mm-api
+
+# Update libraries
+RUN ldconfig
+
+# Allow install of Microsoft fonts (needed for pyqt5 setup)
+RUN echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
+
+# Install PyQT5 & other libs for ad_display 
+RUN apt-get update && apt-get install -y  \
+    python3-pyqt5 \
+    python3-pyqt5.qtmultimedia \
+    libqt5multimedia5-plugins \
+    ubuntu-restricted-extras \
+    libavcodec-extra \
+    gstreamer1.0-plugins-ugly \
+    gstreamer1.0-libav \
+    # Additional requirements - Miru
+    gstreamer1.0-x \
+    libnvidia-encode-550 \
+    ladspa-sdk \
+    nvidia-settings\
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
 WORKDIR /app
 
 COPY src/requirements.txt .
 RUN pip3 install -r requirements.txt
+
+RUN nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"; exit 0 
+# Need for Qt
+ENV LD_PRELOAD="/usr/lib/aarch64-linux-gnu/libgomp.so.1" 
 
 COPY src/detect.py .
 

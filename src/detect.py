@@ -26,7 +26,7 @@ while True:
     # Process detections
     for det in results.xyxy[0]:
         x1, y1, x2, y2, conf, cls = det
-        if conf > 0.5:  # Confidence threshold
+        if conf > 0.60:  # Confidence threshold
             label = model.names[int(cls)]
             current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 

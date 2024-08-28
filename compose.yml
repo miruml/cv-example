@@ -2,7 +2,7 @@ version: '3.3'
 services:
   jetson-detectnet:
     build: .
-    image: jetson-detectnet:0.0.1
+    # image: jetson-detectnet:0.0.1
     container_name: jetson-detectnet
     runtime: nvidia
     network_mode: host

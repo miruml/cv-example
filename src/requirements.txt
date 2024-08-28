@@ -1,3 +1,7 @@
 torch
 torchvision
 opencv-python
+pandas
+requests
+numpy==1.23.5
+scipy

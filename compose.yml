@@ -1,13 +1,15 @@
 services:
-  yolov5-object-detection:
+  object-detection:
     build: .
-    container_name: jetson-yolov5
+    container_name: yolov5
     runtime: nvidia
     network_mode: host
     devices:
       - /dev/video0:/dev/video0
     volumes:
-      - /tmp/.X11-unix/:/tmp/.X11-unix
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /tmp/.docker.xauth:/tmp/.docker.xauth
+      - ./output:/app/output 
     deploy:
       resources:
         reservations:
@@ -16,7 +18,9 @@ services:
               count: 1
               capabilities: [gpu]
     environment:
-      - DISPLAY=:0
+      - DISPLAY=${DISPLAY}
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,utility,video
+      - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=/tmp/.docker.xauth
     privileged: true

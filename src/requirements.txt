@@ -1,6 +1,6 @@
 torch
 torchvision
-opencv-python
+opencv-python-headless
 pandas
 requests
 numpy==1.23.5

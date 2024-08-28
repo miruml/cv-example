@@ -1,5 +1,6 @@
 import cv2
 import torch
+from datetime import datetime
 
 # Load YOLOv5 model
 model = torch.hub.load("ultralytics/yolov5", "yolov5s", pretrained=True, trust_repo=True)
@@ -15,23 +16,17 @@ while True:
     # Perform detection
     results = model(frame)
 
-    # Draw bounding boxes
+    # Process detections
     for det in results.xyxy[0]:
         x1, y1, x2, y2, conf, cls = det
         if conf > 0.5:  # Confidence threshold
-            cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
-            cv2.putText(
-                frame,
-                f"{model.names[int(cls)]} {conf:.2f}",
-                (int(x1), int(y1) - 10),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                0.9,
-                (0, 255, 0),
-                2,
-            )
+            label = model.names[int(cls)]
+            current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # Display the frame
-    cv2.imshow("Object Detection", frame)
+            print(f"Label: {label}")
+            print(f"Coordinates: ({int(x1)}, {int(y1)}) to ({int(x2)}, {int(y2)})")
+            print(f"Time: {current_time}")
+            print("-" * 50)  # Separator between detections
 
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break

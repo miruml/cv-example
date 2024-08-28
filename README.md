@@ -1,22 +1,23 @@
-# Jetson DetectNet Object Detection
+## Jetson YOLOv5 Object Detection
 
-This project contains a Dockerized application that runs object detection on a Jetson device using the `jetson-inference` and `jetson-utils` libraries. The application captures live video from the device's camera and performs real-time object detection.
+This project contains a Dockerized application that runs real-time object detection on a Jetson device using YOLOv5 and OpenCV. The application captures live video from a USB camera and performs object detection with bounding box visualization.
 
-## Project Structure
+### Project Structure
 
+- `src/detect.py`: The Python script that contains the object detection logic.
+- `src/requirements.txt`: List of Python dependencies.
 - `Dockerfile`: Instructions for building the Docker image.
-- `compose.yml`: Configuration for running the container using Docker Compose.
-- `app.py`: The Python script that contains the object detection logic.
+- `docker-compose.yml`: Configuration for running the container using Docker Compose.
 
-## Prerequisites
+### Prerequisites
 
-- A Jetson device with Docker and NVIDIA Docker runtime installed.
-- A camera connected to the Jetson device (e.g., `/dev/video0`).
+- A Jetson device with Docker and NVIDIA Container Toolkit installed.
+- A USB camera connected to the Jetson device (e.g., Logitech camera).
 
-## Building and Running the Application
+### Building and Running the Application
 
 1. Clone the repository and navigate to the project directory:
 
    ```bash
    git clone <repository_url>
-   cd jetson-detectnet
+   cd jetson-yolov5-detection

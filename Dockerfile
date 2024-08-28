@@ -1,16 +1,10 @@
-# Base image for Jetson devices with NVIDIA libraries
-FROM dustynv/jetson-inference:r35.3.1
+FROM nvcr.io/nvidia/l4t-pytorch:r35.2.1-pth2.0-py3
 
-# Install additional dependencies if needed
-RUN apt-get update && apt-get install -y \
-    python3-pip \
-    && rm -rf /var/lib/apt/lists/*
-
-# Set the working directory in the container
 WORKDIR /app
 
-# Copy the Python script into the container
-COPY app.py .
+COPY src/requirements.txt .
+RUN pip install -r requirements.txt
 
-# Set the entrypoint to run the Python script
-CMD ["python3", "app.py"]
+COPY src/detect.py .
+
+CMD ["python", "detect.py"]

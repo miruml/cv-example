@@ -1,9 +1,7 @@
-version: '3.3'
 services:
-  jetson-detectnet:
+  yolov5-object-detection:
     build: .
-    # image: jetson-detectnet:0.0.1
-    container_name: jetson-detectnet
+    container_name: jetson-yolov5
     runtime: nvidia
     network_mode: host
     devices:
